@@ -1,0 +1,21 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "password",
+    "database": "socket-chat-db",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres",
+    "logging": false
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "pool":{
+      "max": 15,
+      "min": 1,
+      "idle": 200000,
+      "acquire": 200000
+    }
+  }
+}
