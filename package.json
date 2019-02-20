@@ -5,19 +5,21 @@
   "license": "MIT",
   "scripts": {
     "dev": "",
-    "server:dev": "",
-    "server:build": "",
-    "server:run": "",
+    "server:dev": "babel-node server/src/index.js",
+    "server:build": "webpack --config server/webpack.server.prod.js",
+    "server:run": "node server/dist/server.js",
     "client:dev": "webpack-dev-server --config client/webpack.client.dev.js",
-    "client:build": "",
-    "client:run": ""
+    "client:build": "webpack --config client/webpack.client.prod.js"
   },
   "dependencies": {
     "@babel/core": "^7.3.3",
+    "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^1.0.1",
+    "copy-webpack-plugin": "^4.6.0",
+    "express": "^4.16.4",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "html-webpack-plugin": "^3.2.0",
     "react": "^16.8.2",
@@ -26,6 +28,7 @@
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14",
-    "webpack-merge": "^4.2.1"
+    "webpack-merge": "^4.2.1",
+    "webpack-node-externals": "^1.7.2"
   }
 }
