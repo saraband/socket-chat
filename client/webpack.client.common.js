@@ -14,9 +14,9 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      COMPONENTS: path.resolve(__dirname, 'src/browser/components/'),
-      ROUTES: path.resolve(__dirname, 'src/browser/routes/'),
-      PAGES: path.resolve(__dirname, 'src/browser/pages/')
+      COMPONENTS: path.resolve(__dirname, 'src/components'),
+      ROUTES: path.resolve(__dirname, 'src/routes'),
+      PAGES: path.resolve(__dirname, 'src/pages')
     }
   },
   module: {

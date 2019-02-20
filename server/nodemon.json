@@ -1,0 +1,8 @@
+{
+  "restartable": "rs",
+  "verbose": false,
+  "watch": [
+    "server/src/**/*"
+  ],
+  "ext": "js,json"
+}
