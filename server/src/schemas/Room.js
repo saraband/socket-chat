@@ -1,5 +1,5 @@
-import db from '../models';
-import chatManager from '../chatManager';
+import db from 'MODELS';
+import roomsManager from 'ROOT/roomsManager';
 
 const typeDefs = `
   type Room {
@@ -16,7 +16,7 @@ const typeDefs = `
 
 const resolvers = {
   Room: {
-    usersConnected: (room) => chatManager.rooms[room.id].count
+    usersConnected: (room) => roomsManager.getRoom(room.id).usersCount
   },
   Query: {
     roomsList: () => db.room.findAll()

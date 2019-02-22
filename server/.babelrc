@@ -3,6 +3,14 @@
     "@babel/preset-env"
   ],
   "plugins": [
-    "@babel/plugin-proposal-class-properties"
+    "@babel/plugin-proposal-class-properties",
+    ["babel-plugin-module-resolver", {
+      "alias": {
+        "ROOT": "./server/src",
+        "COMPONENTS": "./server/src/components",
+        "MODELS": "./server/src/models",
+        "SHARED": "./shared"
+      }
+    }]
   ]
 }
