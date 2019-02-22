@@ -17,12 +17,18 @@ export default class ChatManager {
 
     this.rooms = {};
     rooms.forEach(({ id }) => {
-      this.rooms[id] = io
+      // TODO: TURN THIS into a component
+      this.rooms[id] = {};
+      this.rooms[id].count = 0;
+      this.rooms[id].io = io
         .of(`/${id}`)
         .on('connection', (socket) => {
+          console.log('client connected to room ', id)
+
           /**
            * SEND MESSAGE
            */
+          this.rooms[id].count++;
           socket.on(Events.SEND_MESSAGE, async (data) => {
             try {
               console.log(`[ROOM ${id}] ${Events.SEND_MESSAGE} ${data}`);
@@ -45,7 +51,8 @@ export default class ChatManager {
            * DISCONNECT
            */
           socket.on('disconnect', () => {
-
+            this.rooms[id].count--;
+            console.log('- client left of room ', id)
           });
       });
     })

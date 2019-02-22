@@ -1,7 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
-import io from 'socket.io-client';
-import { Events } from 'SHARED/constants';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import RoomCard from './RoomCard';
+
+const GET_ROOMS_LIST = gql`
+  query roomsList {
+    roomsList {
+      id
+      name
+      usersConnected
+    }
+  }
+`;
+
+export default class RoomsList extends React.PureComponent {
+  render () {
+    return (
+      <Query query={GET_ROOMS_LIST}>
+        {({ data, loading, error }) => {
+          if (loading) return <p>Loading rooms list</p>;
+          if (error) return <p>Error loading rooms list</p>;
+
+          return (
+            <div>
+              {data.roomsList.map((roomData) => (
+                <RoomCard key={roomData.id} {...roomData} />
+              ))}
+            </div>
+          );
+        }}
+      </Query>
+    );
+  }
+}
 
 const Button = styled.button`
   padding: 8px 12px;
@@ -11,44 +43,3 @@ const Button = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
-
-export default class RoomsList extends React.PureComponent {
-  constructor (props) {
-    super(props);
-    this.state = {
-      messages: []
-    };
-  }
-
-  componentDidMount() {
-    this.socket = io.connect('http://localhost:3500/1');
-
-    this.socket.on(Events.RECEIVE_MESSAGE, (data) => {
-      console.log('received message', data)
-      this.setState({
-        messages: [
-          ...this.state.messages,
-          JSON.parse(data)
-        ]
-      })
-    });
-  }
-
-  sendMessage = () => {
-    this.socket.emit(Events.SEND_MESSAGE, JSON.stringify({
-      username: 'saraband',
-      content: 'Hello guys, how is it going ?'
-    }));
-  }
-
-  render () {
-    return (
-      <div>
-        <Button onClick={this.sendMessage}>Send message</Button>
-        {this.state.messages.map(({ id, username, content }) => (
-          <p key={id}><strong>{username}</strong>: {content}</p>
-        ))}
-      </div>
-    );
-  }
-}

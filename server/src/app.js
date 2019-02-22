@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 /* GRAPHQL */
-app.use(cors);
+app.use(cors());
 app.use('/graphql', graphQLHttp({
   schema,
   pretty: true,
