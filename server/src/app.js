@@ -2,6 +2,7 @@ import express from 'express';
 import helmet from 'helmet';
 import graphQLHttp from 'express-graphql';
 import schema from './schemas';
+import cors from 'cors';
 
 const app = express();
 
@@ -10,6 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 /* GRAPHQL */
+app.use(cors);
 app.use('/graphql', graphQLHttp({
   schema,
   pretty: true,
