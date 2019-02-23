@@ -4,6 +4,8 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import RoomCard from './RoomCard';
 import RoomCardColors from '../../constants/RoomCardColors';
+import {Flex} from 'COMPONENTS/UI/Flex';
+import {createCssGutter, Gutter20} from 'COMPONENTS/UI/Common';
 
 const GET_ROOMS_LIST = gql`
   query roomsList {
@@ -24,7 +26,7 @@ export default class RoomsList extends React.PureComponent {
           if (error) return <p>Error loading rooms list</p>;
 
           return (
-            <div>
+            <Container>
               {data.roomsList.map((roomData, index) => (
                 <RoomCard
                   key={roomData.id}
@@ -32,10 +34,16 @@ export default class RoomsList extends React.PureComponent {
                   {...roomData}
                   />
               ))}
-            </div>
+            </Container>
           );
         }}
       </Query>
     );
   }
-}
+};
+
+const Gutter = createCssGutter(20, 'horizontal');
+const Container = styled(Flex)`
+  flex-wrap: wrap;
+  ${Gutter};
+`;
