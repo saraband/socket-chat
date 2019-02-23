@@ -19,7 +19,7 @@ export default class RoomsManager {
 
     this.rooms = {};
     rooms.forEach((roomData) => {
-      this.rooms[roomData.id] = new Room(roomData, io);
+      this.addRoom(roomData);
     });
   };
 
@@ -27,7 +27,11 @@ export default class RoomsManager {
     return this.rooms[id];
   };
 
-  listen (port) {
+  addRoom = (roomData) => {
+    this.rooms[roomData.id] = new Room(roomData, io);
+  };
+
+  listen = (port) => {
     server.listen(port);
-  }
+  };
 };

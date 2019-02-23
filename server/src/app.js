@@ -3,7 +3,6 @@ import helmet from 'helmet';
 import graphQLHttp from 'express-graphql';
 import schema from './schemas';
 import cors from 'cors';
-import roomsManager from 'ROOT/RoomsManager';
 
 const app = express();
 
