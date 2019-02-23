@@ -15,7 +15,7 @@ const typeDefs = `
     id: ID!
     name: String!
     usersConnected: Int!
-    messages (last: Int = 5): [Message!]!
+    messages (limit: Int = 5): [Message!]!
   }
   
   extend type Mutation {
@@ -24,27 +24,42 @@ const typeDefs = `
   
   extend type Query {
     roomsList: [Room!]!
+    room (roomId: ID!): Room
   }
 `;
 
 const resolvers = {
   Room: {
     usersConnected: (room) => roomsManager.getRoom(room.id).usersCount,
-    messages: (room, { last }) => {
-      return db.message.findAll({
+    messages: async (room, { limit }) => {
+      const lastMessages = await db.message.findAll({
         where: {
           roomId: {
             [Op.eq]: room.id
           }
         },
+        limit,
         order: [
           ['createdAt', 'DESC']
         ]
       });
+
+      return [ ...lastMessages ].reverse();
     }
   },
   Query: {
-    roomsList: () => db.room.findAll()
+    roomsList: () => db.room.findAll(),
+    room: async (_, { roomId }) => {
+      const room = await db.room.findOne({
+        where: {
+          id: {
+            [Op.eq]: roomId
+          }
+        }
+      });
+
+      return room;
+    }
   },
   Mutation: {
     createRoom: async (_, { name }) => {

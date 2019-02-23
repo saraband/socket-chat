@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import RoomCard from './RoomCard';
+import RoomCardColors from '../../constants/RoomCardColors';
 
 const GET_ROOMS_LIST = gql`
   query roomsList {
@@ -24,8 +25,12 @@ export default class RoomsList extends React.PureComponent {
 
           return (
             <div>
-              {data.roomsList.map((roomData) => (
-                <RoomCard key={roomData.id} {...roomData} />
+              {data.roomsList.map((roomData, index) => (
+                <RoomCard
+                  key={roomData.id}
+                  color={RoomCardColors[index % RoomCardColors.length]}
+                  {...roomData}
+                  />
               ))}
             </div>
           );
@@ -34,12 +39,3 @@ export default class RoomsList extends React.PureComponent {
     );
   }
 }
-
-const Button = styled.button`
-  padding: 8px 12px;
-  font-size: 1.4em;
-  border: 1px solid grey;
-  border-radius: 3px;
-  background-color: transparent;
-  cursor: pointer;
-`;

@@ -8,14 +8,14 @@ export default class Room {
     this.usersCount = 0;
 
     // Setup connection to this room
-    this.io = io
-      .of(`/${id}`)
+    io.of(`/${id}`)
       .on('connection', (socket) => {
         ++this.usersCount;
         console.log(`[+] A client joined room #${name} (id: ${id})`);
 
         // Configure socket
         socket.on(Events.SEND_MESSAGE, async (data) => {
+          console.log('received:', data)
           try {
             // Commit message to DB
             const parsedData = JSON.parse(data)
@@ -24,7 +24,8 @@ export default class Room {
             // Emit message to all people of the room
             io.of(id).emit(Events.RECEIVE_MESSAGE, JSON.stringify({
               ...parsedData,
-              id: createdMessage.id
+              id: createdMessage.id,
+              createdAt: createdMessage.createdAt
             }));
           } catch (err) {
             // TODO logger

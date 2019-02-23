@@ -3,10 +3,17 @@ import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import Routes, { addParamsToUrl } from 'ROUTES';
 
-export default withRouter(memo(({ id, name, usersConnected, history }) => (
-  <Container onClick={() => {
-    history.push(addParamsToUrl(Routes.ROOM, { roomId: id }))
-  }}>
+export default withRouter(memo(({
+  id,
+  name,
+  color,
+  usersConnected,
+  history
+}) => (
+  <Container
+    color={color}
+    onClick={() => history.push(addParamsToUrl(Routes.ROOM, { roomId: id }))}
+    >
     <h3>#{name}</h3>
     <p>{usersConnected} users connected</p>
   </Container>
@@ -24,4 +31,6 @@ const Container = styled.div`
   font-family: Arial;
   color: white;
   p { font-size: 15px; }
+  
+  background-color: ${p => p.color};
 `;
