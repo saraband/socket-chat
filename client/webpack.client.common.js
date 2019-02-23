@@ -15,9 +15,11 @@ module.exports = {
   resolve: {
     alias: {
       COMPONENTS: path.resolve(__dirname, 'src/components'),
+      CONSTANTS: path.resolve(__dirname, 'src/constants'),
       ROUTES: path.resolve(__dirname, 'src/routes'),
       PAGES: path.resolve(__dirname, 'src/pages'),
-      SHARED: path.resolve(__dirname, '../shared')
+      SHARED: path.resolve(__dirname, '../shared'),
+      LAYOUTS: path.resolve(__dirname, 'src/layouts')
     }
   },
   module: {
@@ -28,6 +30,10 @@ module.exports = {
         use: {
           loader: 'babel-loader'
         }
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       }
     ]
   }
