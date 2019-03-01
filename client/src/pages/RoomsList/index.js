@@ -6,8 +6,10 @@ import RoomCard from './RoomCard';
 import RoomCardColors from '../../constants/RoomCardColors';
 import {Flex} from 'COMPONENTS/UI/Flex';
 import {createCssGutter, Gutter20} from 'COMPONENTS/UI/Common';
+import FontSizes from 'CONSTANTS/FontSizes';
+import CreateRoomCard from './CreateRoomCard';
 
-const GET_ROOMS_LIST = gql`
+export  const GET_ROOMS_LIST = gql`
   query roomsList {
     roomsList {
       id
@@ -34,6 +36,9 @@ export default class RoomsList extends React.PureComponent {
                   {...roomData}
                   />
               ))}
+
+              {/* CREATE ROOM CARD */}
+              <CreateRoomCard />
             </Container>
           );
         }}

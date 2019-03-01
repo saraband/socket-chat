@@ -5,13 +5,14 @@ import gql from 'graphql-tag';
 import io from 'socket.io-client';
 import { Events } from 'SHARED/constants';
 import { withRouter } from 'react-router-dom';
+import Colors from 'CONSTANTS/Colors';
 
 const GET_ROOM = gql`
-  query getRoom ($roomId: ID!) {
+  query getRoom ($roomId: ID!, $offset: Int! = 0, $limit: Int! = 5) {
     room (roomId: $roomId) {
       id
       name
-      messages {
+      messages (offset: $offset, limit: $limit) {
         id
         username
         content
@@ -79,8 +80,9 @@ class Room extends React.PureComponent {
       <Query
         query={GET_ROOM}
         variables={{ roomId }}
+        fetchPolicy='cache-and-network'
         >
-        {({ data, error, loading }) => {
+        {({ data, error, loading, fetchMore }) => {
           if (loading) return <p>Loading room {roomId}</p>;
           if (error) return <p>Error loading room {roomId}</p>;
 
@@ -100,6 +102,35 @@ class Room extends React.PureComponent {
                     onChange={(e) => this.setState({ pendingMessage: e.target.value })} />
                   <button type='submit'>Send message</button>
                 </form>
+
+              {/* MESSAGES */}
+              <LoadMore onClick={() => {
+                  fetchMore({
+                    variables: {
+                      roomId,
+                      offset: data.room.messages.length,
+                      limit: 5
+                    },
+                    updateQuery: (prev, { fetchMoreResult }) => {
+                      if (!fetchMoreResult) return prev;
+
+                      console.log(prev)
+                      console.log(fetchMoreResult)
+
+                      return {
+                        room: {
+                          ...prev.room,
+                          messages: [
+                            ...fetchMoreResult.room.messages,
+                            ...prev.room.messages
+                          ]
+                        }
+                      };
+                    }
+                  })
+                }}>
+                Load more
+              </LoadMore>
               {data.room.messages.map(({ id, username, content}) => <p key={id}>{username}: {content}</p>)}
             </div>
           )
@@ -110,3 +141,14 @@ class Room extends React.PureComponent {
 }
 
 export default withApollo(withRouter(Room));
+
+const LoadMore = styled.div`
+  padding: 8px 12px;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

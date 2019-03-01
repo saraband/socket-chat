@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import Routes, { addParamsToUrl } from 'ROUTES';
-import {Gutter20, H1} from 'COMPONENTS/UI/Common';
+import { Gutter20, H1 } from 'COMPONENTS/UI/Common';
 import FontSizes from 'CONSTANTS/FontSizes';
 
 export default withRouter(memo(({

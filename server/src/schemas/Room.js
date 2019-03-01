@@ -15,7 +15,7 @@ const typeDefs = `
     id: ID!
     name: String!
     usersConnected: Int!
-    messages (limit: Int = 5): [Message!]!
+    messages (offset: Int! = 0, limit: Int = 5): [Message!]!
   }
   
   extend type Mutation {
@@ -31,13 +31,14 @@ const typeDefs = `
 const resolvers = {
   Room: {
     usersConnected: (room) => roomsManager.getRoom(room.id).usersCount,
-    messages: async (room, { limit }) => {
+    messages: async (room, { offset, limit }) => {
       const lastMessages = await db.message.findAll({
         where: {
           roomId: {
             [Op.eq]: room.id
           }
         },
+        offset,
         limit,
         order: [
           ['createdAt', 'DESC']
